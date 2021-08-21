@@ -1,0 +1,69 @@
+# Import of the main build_settings file
+include:
+  - ../../fastlane/build_settings.yml
+
+# Definition of the project
+name: CosmonautApp
+settings:
+  groups:
+    - BuildSettings
+
+# Definition of the targets that exists within the project
+targets:
+  
+  # The main application
+  CosmonautApp:
+    type: application
+    platform: iOS
+    sources: CosmonautApp
+    settings:
+      groups:
+        - BuildSettings
+    dependencies:
+      # Domains
+      - framework: ISSCosmonaut.framework
+        implicit: true
+      - framework: ISSSpacesuit.framework
+        implicit: true
+      - framework: ISSScaffold.framework
+        implicit: true
+      # Services
+      - framework: ISSSpacesuitService.framework
+        implicit: true
+      - framework: ISSCosmonautService.framework
+        implicit: true
+      - framework: ISSOverviewService.framework
+        implicit: true
+      # Core
+      - framework: ISSNetwork.framework
+        implicit: true
+      - framework: ISSRadio.framework
+        implicit: true
+      - framework: ISSPersistence.framework
+        implicit: true
+      - framework: ISSUIComponents.framework
+        implicit: true
+  
+  # Tests for the main application
+  CosmonautAppTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: CosmonautAppTests
+    settings:
+      groups:
+        - BuildSettings
+    dependencies:
+      - target: CosmonautApp
+    settings:
+      TEST_HOST: $(BUILT_PRODUCTS_DIR)/Cosmonaut.app/Cosmonaut
+
+  # UITests for the main application
+  CosmonautAppUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: CosmonautAppUITests
+    settings:
+      groups:
+        - BuildSettings
+    dependencies:
+      - target: CosmonautApp
